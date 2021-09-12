@@ -29,4 +29,5 @@ body {
 }
 .mark {
    font-size: 36px;
+   user-select: none;
 }

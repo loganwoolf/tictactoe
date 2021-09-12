@@ -6,21 +6,36 @@ const playerFactory = (name, mark) => {
 
 	const markBoard = (event) => {
 		let square = event.target.dataset.squareId
-		if (!gameBoard.marks[square]) {
+		if (gameBoard.marks[square] === null) {
 			gameBoard.marks[square] = mark
+			displayController.updateGameBoard()
+			displayController.board.removeEventListener('click', game.currentPlayer.markBoard)
+			game.switchPlayer()
+			displayController.board.addEventListener('click', game.currentPlayer.markBoard)
 		}
-		//change player here
-		displayController.updateGameBoard()
-
 	}
 
 	return {name, mark, markBoard}
 }
 
-const playerOne = playerFactory('Player 1', '❌')
-const playerTwo = playerFactory('Player 2', '⭕️')
-const players = [playerOne, playerTwo]
-const currentPlayer = players[0]
+
+const game = (() => {
+	const playerOne = playerFactory('Player 1', '❌')
+	const playerTwo = playerFactory('Player 2', '⭕️')
+	const players = [playerOne, playerTwo]
+	let currentPlayer = players[0]
+
+	const switchPlayer = () => {
+		if (game.currentPlayer === players[0]) {
+			game.currentPlayer = players[1]
+		} else {
+			game.currentPlayer = players[0]
+		}
+		return
+	}
+
+	return {currentPlayer, switchPlayer}
+})()
 
 
 
@@ -41,7 +56,7 @@ const displayController = (() => {
 
 	board.classList.add('board')
 	jsTarget.appendChild(board)
-	board.addEventListener('click', currentPlayer.markBoard)
+	board.addEventListener('click', game.currentPlayer.markBoard)
 
 	gameBoard.marks.forEach( (element, index) => {
 		const square = document.createElement('div')
@@ -65,6 +80,7 @@ const displayController = (() => {
 	}
 
 	return {
+		board,
 		updateGameBoard,
 
 	}
