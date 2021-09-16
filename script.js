@@ -8,8 +8,8 @@ const playerFactory = (name, mark) => {
 		let square = event.target.dataset.squareId
 		if (gameBoard.marks[square] === null) {
 			gameBoard.marks[square] = mark
-			displayController.updateGameBoard()
 			displayController.board.removeEventListener('click', game.currentPlayer.markBoard)
+			displayController.updateGameBoard()
 			game.switchPlayer()
 			displayController.board.addEventListener('click', game.currentPlayer.markBoard)
 		}
@@ -35,8 +35,8 @@ const game = (() => {
 	}
 
 	const checkForWinCondition = () => {
-		// reduce current player's positions to an array of whichever positions
-		// he is occupying. Check if all of the positions in the windConditions
+		// convert current player's positions to an array of whichever positions
+		// he is occupying. Check if all of the positions in the winConditions
 		// array are included in the current positions array
 		const winConditions = [
 			[0,1,2],
@@ -58,10 +58,14 @@ const game = (() => {
 		.filter(x => typeof x === 'number')
 		console.log(currentPositions);
 		
-		const success = winConditions.filter(condition =>
-				currentPositions.includes(condition[0] && condition[1] && condition[2])
+		const success = winConditions.filter( condition => 
+			condition.every( square => currentPositions.includes(square))
 		)
-		console.log(success);
+		
+		if (success.length === 1) {
+			console.log(`${game.currentPlayer.name} WINS!`);
+		}
+		
 	}
 
 	return {currentPlayer, switchPlayer, checkForWinCondition}
@@ -70,8 +74,8 @@ const game = (() => {
 
 
 const gameBoard = (() => {
-	const marks = ['❌', '⭕️', '❌', null, null, '❌', '⭕️', '⭕️', '❌']
-	// const marks = Array(9).fill(null)
+	// const marks = ['❌', '⭕️', '❌', null, null, '❌', '⭕️', '⭕️', '⭕️']
+	const marks = Array(9).fill(null)
 	return {
 		marks,
 		
