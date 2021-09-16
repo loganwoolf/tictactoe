@@ -34,14 +34,44 @@ const game = (() => {
 		return
 	}
 
-	return {currentPlayer, switchPlayer}
+	const checkForWinCondition = () => {
+		// reduce current player's positions to an array of whichever positions
+		// he is occupying. Check if all of the positions in the windConditions
+		// array are included in the current positions array
+		const winConditions = [
+			[0,1,2],
+			[3,4,5],
+			[6,7,8],
+			[0,3,6],
+			[1,4,7],
+			[2,5,8],
+			[0,4,8],
+			[2,4,6]
+		]
+
+		const currentPositions = gameBoard.marks
+		.map((mark, i) => {
+			if (mark === game.currentPlayer.mark) {
+				return i
+			}
+		})
+		.filter(x => typeof x === 'number')
+		console.log(currentPositions);
+		
+		const success = winConditions.filter(condition =>
+				currentPositions.includes(condition[0] && condition[1] && condition[2])
+		)
+		console.log(success);
+	}
+
+	return {currentPlayer, switchPlayer, checkForWinCondition}
 })()
 
 
 
 const gameBoard = (() => {
-	// const marks = ['❌', '⭕️', null, null, '❌', null, '⭕️', '⭕️', null]
-	const marks = Array(9).fill(null)
+	const marks = ['❌', '⭕️', '❌', null, null, '❌', '⭕️', '⭕️', '❌']
+	// const marks = Array(9).fill(null)
 	return {
 		marks,
 		
