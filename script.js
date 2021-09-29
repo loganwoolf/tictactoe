@@ -2,7 +2,7 @@
 
 
 
-const playerFactory = (name, mark) => {
+const playerFactory = (name, mark, number) => {
 
 	const markBoard = (event) => {
 		let square = event.target.dataset.squareId
@@ -10,29 +10,31 @@ const playerFactory = (name, mark) => {
 			gameBoard.marks[square] = mark
 			displayController.board.removeEventListener('click', game.currentPlayer.markBoard)
 			displayController.updateGameBoard()
-			game.switchPlayer()
-			displayController.board.addEventListener('click', game.currentPlayer.markBoard)
+			game.checkForWinCondition()
 		}
 	}
 
-	return {name, mark, markBoard}
+	return {name, mark, number, markBoard}
 }
 
 
 const game = (() => {
-	const playerOne = playerFactory('Player 1', '❌')
-	const playerTwo = playerFactory('Player 2', '⭕️')
+	const playerOne = playerFactory('Player 1', '❌', 1)
+	const playerTwo = playerFactory('Player 2', '⭕️', 2)
 	const players = [playerOne, playerTwo]
 	let currentPlayer = players[0]
 
 	const switchPlayer = () => {
+		displayController.removeHighlight()
 		if (game.currentPlayer === players[0]) {
 			game.currentPlayer = players[1]
 		} else {
 			game.currentPlayer = players[0]
 		}
+		displayController.highlightCurrentPlayer()
 		return
 	}
+
 
 	const checkForWinCondition = () => {
 		// convert current player's positions to an array of whichever positions
@@ -63,12 +65,18 @@ const game = (() => {
 		)
 		
 		if (success.length === 1) {
+			//when game is won
 			console.log(`${game.currentPlayer.name} WINS!`);
+
+		} else {
+			//when game is not over yet
+			switchPlayer()
+			displayController.board.addEventListener('click', game.currentPlayer.markBoard)
 		}
 		
 	}
 
-	return {currentPlayer, switchPlayer, checkForWinCondition}
+	return {players, currentPlayer, switchPlayer, checkForWinCondition}
 })()
 
 
@@ -132,10 +140,26 @@ const displayController = (() => {
 		})
 	}
 
+	const highlightCurrentPlayer = () => {
+		const currentPlayerLabel = document.querySelector(`.player-${game.currentPlayer.number}`)
+		currentPlayerLabel.classList.add('current')
+
+		return
+	}
+	highlightCurrentPlayer() //runs once at load
+
+	const removeHighlight = () => {
+		const currentPlayerLabel = document.querySelector(`.player-${game.currentPlayer.number}`)
+		currentPlayerLabel.classList.remove('current')
+
+		return
+	}
+
 	return {
 		board,
 		updateGameBoard,
-
+		highlightCurrentPlayer,
+		removeHighlight,
 	}
 
 })()

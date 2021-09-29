@@ -6,7 +6,7 @@ body {
 	--ht-header: 5rem;
 	--ht-footer: 2rem;
 	--ht-combined: calc(var(--ht-header) + var(--ht-footer));
-	margin: 0;
+	margin: 0 auto;
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-auto-rows: var(--ht-header) calc(100vh - var(--ht-combined)) var(--ht-footer);
@@ -24,7 +24,7 @@ header {
 	background: lightgray;
 	border-bottom: 3px solid black;
 }
-header h1 {
+h1,p {
 	margin: 0;
 }
 footer {
@@ -44,6 +44,13 @@ main {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+.js-target {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 2rem;
 }
 .players {
 	display: flex;
@@ -69,6 +76,9 @@ main {
 }
 .player button:hover {
 	background: #0001
+}
+.current {
+	background: red;
 }
 .board {
 	--cell-size: 4rem;
