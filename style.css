@@ -45,6 +45,31 @@ main {
 	justify-content: center;
 	align-items: center;
 }
+.players {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.player {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+}
+.player button {
+	--size: 0.7rem;
+	color: white;
+	font-size: calc(var(--size) / 2);
+	width: var(--size);
+	height: var(--size);
+	padding: 0;
+	padding-top: calc(var(--size) / 8);
+	border-radius: calc(var(--size) / 2);
+	border: none;
+	background: #0002;
+}
+.player button:hover {
+	background: #0001
+}
 .board {
 	--cell-size: 4rem;
 	display: grid;

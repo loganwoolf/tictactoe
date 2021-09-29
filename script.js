@@ -86,6 +86,25 @@ const gameBoard = (() => {
 
 const displayController = (() => {
 	const jsTarget = document.querySelector('.js-target')
+	
+	const playersElement = document.createElement('div')
+	playersElement.classList.add('players')
+	game.players.forEach( (player, index) => {
+		const playerElement = document.createElement('div')
+		playerElement.classList.add('player')
+		const nameElement = document.createElement('p')
+		nameElement.classList.add(`player-${index + 1}`)
+		nameElement.textContent = player.name
+		playerElement.appendChild(nameElement)
+		const editButton = document.createElement('button')
+		editButton.classList.add(`edit-player-${index + 1}`)
+		editButton.textContent = '🖋'
+		playerElement.appendChild(editButton)
+		playersElement.appendChild(playerElement)
+	})
+
+	jsTarget.appendChild(playersElement)
+
 	const board = document.createElement('div')
 
 	board.classList.add('board')
