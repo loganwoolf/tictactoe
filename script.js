@@ -2,7 +2,7 @@
 
 
 
-const playerFactory = (name, mark, number) => {
+const PlayerFactory = (name, mark, number) => {
 
 	const markBoard = (event) => {
 		let square = event.target.dataset.squareId
@@ -19,8 +19,8 @@ const playerFactory = (name, mark, number) => {
 
 
 const game = (() => {
-	const playerOne = playerFactory('Player 1', '❌', 1)
-	const playerTwo = playerFactory('Player 2', '⭕️', 2)
+	const playerOne = PlayerFactory('Player 1', '❌', 1)
+	const playerTwo = PlayerFactory('Player 2', '⭕️', 2)
 	const players = [playerOne, playerTwo]
 	let currentPlayer = players[0]
 
