@@ -50,9 +50,12 @@ main {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-items: center;
 	gap: 2rem;
 }
 .players {
+	padding-top: 2rem;
+	height: 4rem;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -61,6 +64,9 @@ main {
 	display: flex;
 	flex-direction: row;
 	align-items: flex-end;
+}
+.player p {
+	transition: all 0.3s linear;
 }
 .player button {
 	--size: 0.7rem;
@@ -78,7 +84,16 @@ main {
 	background: #0001
 }
 .current {
-	background: red;
+	/* background: red; */
+	transform: scale(2) translateY(-0.8rem) rotate(360deg);
+}
+.winner {
+	max-width: 100%;
+	transition: 0.1s ease-in all;
+}
+.players:hover .winner {
+	transform-origin: center top;
+	transform: scale(1.2) rotate(-2deg);
 }
 .board {
 	--cell-size: 4rem;
