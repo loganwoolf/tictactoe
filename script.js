@@ -38,7 +38,7 @@ const game = (() => {
 
 	const checkForWinCondition = () => {
 		// convert current player's positions to an array of whichever positions
-		// he is occupying. Check if all of the positions in the winConditions
+		// he is occupying. Check if all of the positions in any winConditions
 		// array are included in the current positions array
 		const winConditions = [
 			[0,1,2],
@@ -66,6 +66,7 @@ const game = (() => {
 		
 		if (success.length === 1) {
 			//when game is won
+			displayController.showWinner()
 			console.log(`${game.currentPlayer.name} WINS!`);
 
 		} else {
@@ -157,11 +158,33 @@ const displayController = (() => {
 		return
 	}
 
+	const showWinner = () => {
+		playersElement.style.flexDirection = 'column'
+
+		const winnerLabel = document.createElement('p')
+		winnerLabel.classList.add('winner')
+		winnerLabel.textContent = `${game.currentPlayer.name} is victorious!`
+		while (playersElement.hasChildNodes()) {
+			playersElement.removeChild(playersElement.childNodes[0])
+		}
+		playersElement.appendChild(winnerLabel)
+
+		const resetButton = document.createElement('button')
+		resetButton.classList.add('reset')
+		resetButton.textContent = 'Play Again'
+		playersElement.appendChild(resetButton)
+
+
+
+		return
+	}
+
 	return {
 		board,
 		updateGameBoard,
 		highlightCurrentPlayer,
 		removeHighlight,
+		showWinner,
 	}
 
 })()
