@@ -104,10 +104,12 @@ const displayController = (() => {
 		nameElement.classList.add(`player-${index + 1}`)
 		nameElement.textContent = player.name
 		playerElement.appendChild(nameElement)
-		const editButton = document.createElement('button')
-		editButton.classList.add(`edit-player-${index + 1}`)
-		editButton.textContent = '🖋'
-		playerElement.appendChild(editButton)
+
+		// const editButton = document.createElement('button')
+		// editButton.classList.add(`edit-player-${index + 1}`)
+		// editButton.textContent = '🖋'
+		// playerElement.appendChild(editButton)
+		
 		playersElement.appendChild(playerElement)
 	})
 
