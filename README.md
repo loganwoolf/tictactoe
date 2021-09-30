@@ -6,9 +6,11 @@ https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/le
 
 ## To Do
 
-- Add end game routine.
-- Add reset button.
-- Allow changing player name using button on label.
+- Add end game routine. *Done*
+- Add tie game routine.
+- Add reset button. *Done*
+- Add reset functionality.
+- Allow changing player name.
 - Make responsive across different screen sizes.
 
 ### Helpful Resources
