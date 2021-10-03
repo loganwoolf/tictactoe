@@ -59,12 +59,22 @@ const game = (() => {
 		})
 		.filter(x => typeof x === 'number')
 		console.log(currentPositions);
-		
+
+		//check for tie game
+		if (currentPositions.length === 5) {
+			//when game is tied
+			console.log('tie game');
+			displayController.showTie()
+
+			return
+		}
+
+		//check for winning move
 		const success = winConditions.filter( condition => 
 			condition.every( square => currentPositions.includes(square))
 		)
-		
-		if (success.length === 1) {
+
+		if (success.length) {
 			//when game is won
 			displayController.showWinner()
 			console.log(`${game.currentPlayer.name} WINS!`);
@@ -169,12 +179,32 @@ const displayController = (() => {
 		}
 		playersElement.appendChild(winnerLabel)
 
+		showResetButton()
+
+		return
+	}
+
+	const showTie = () => {
+		playersElement.style.flexDirection = 'column'
+
+		const tieLabel = document.createElement('p')
+		tieLabel.classList.add('winner')
+		tieLabel.textContent = 'Game ends in a tie.'
+		while (playersElement.hasChildNodes()) {
+			playersElement.removeChild(playersElement.childNodes[0])
+		}
+		playersElement.appendChild(tieLabel)
+
+		showResetButton()
+
+		return
+	}
+
+	const showResetButton = () => {
 		const resetButton = document.createElement('button')
 		resetButton.classList.add('reset')
 		resetButton.textContent = 'Play Again'
 		playersElement.appendChild(resetButton)
-
-
 
 		return
 	}
@@ -185,6 +215,7 @@ const displayController = (() => {
 		highlightCurrentPlayer,
 		removeHighlight,
 		showWinner,
+		showTie,
 	}
 
 })()
