@@ -7,7 +7,7 @@ https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/le
 ## To Do
 
 - Add end game routine. *Done*
-- Add tie game routine.
+- Add tie game routine. *Done*
 - Add reset button. *Done*
 - Add reset functionality.
 - Allow changing player name.
