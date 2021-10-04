@@ -35,7 +35,6 @@ const game = (() => {
 		return
 	}
 
-
 	const checkForWinCondition = () => {
 		// convert current player's positions to an array of whichever positions
 		// he is occupying. Check if all of the positions in any winConditions
@@ -87,7 +86,16 @@ const game = (() => {
 		
 	}
 
-	return {players, currentPlayer, switchPlayer, checkForWinCondition}
+	const resetGame = () => {
+		document.querySelector('.reset').removeEventListener('click', game.resetGame)
+		displayController.removeWinner()
+		displayController.resetPlayersElement()
+		gameBoard.reset()
+		displayController.updateGameBoard()
+		return
+	}
+
+	return {players, currentPlayer, switchPlayer, checkForWinCondition, resetGame}
 })()
 
 
@@ -95,8 +103,20 @@ const game = (() => {
 const gameBoard = (() => {
 	// const marks = ['❌', '⭕️', '❌', null, null, '❌', '⭕️', '⭕️', '⭕️']
 	const marks = Array(9).fill(null)
+
+	const reset = () => {
+
+		displayController.board.removeEventListener('click', game.currentPlayer.markBoard)
+		marks.fill(null)
+		displayController.clearGameBoard()
+		if (game.currentPlayer = game.players[1]) {
+			game.switchPlayer()
+		}
+		displayController.board.addEventListener('click', game.currentPlayer.markBoard)
+	}
 	return {
 		marks,
+		reset,
 		
 	}
 })()
@@ -108,23 +128,23 @@ const displayController = (() => {
 	
 	const playersElement = document.createElement('div')
 	playersElement.classList.add('players')
-	game.players.forEach( (player, index) => {
-		const playerElement = document.createElement('div')
-		playerElement.classList.add('player')
-		const nameElement = document.createElement('p')
-		nameElement.classList.add(`player-${index + 1}`)
-		nameElement.textContent = player.name
-		playerElement.appendChild(nameElement)
 
-		// const editButton = document.createElement('button')
-		// editButton.classList.add(`edit-player-${index + 1}`)
-		// editButton.textContent = '🖋'
-		// playerElement.appendChild(editButton)
+	const populatePlayersElement = () => {
+		game.players.forEach( (player, index) => {
+			const playerElement = document.createElement('div')
+			playerElement.classList.add('player')
+			const nameElement = document.createElement('p')
+			nameElement.classList.add(`player-${index + 1}`)
+			nameElement.textContent = player.name
+			playerElement.appendChild(nameElement)
+			
+			playersElement.appendChild(playerElement)
+		})
+	}
+	populatePlayersElement()
 		
-		playersElement.appendChild(playerElement)
-	})
-
 	jsTarget.appendChild(playersElement)
+		
 
 	const board = document.createElement('div')
 
@@ -149,23 +169,37 @@ const displayController = (() => {
 			if (gameBoard.marks[item.dataset.squareId]) {
 				item.children[0].textContent = gameBoard.marks[item.dataset.squareId]
 			}
-			
 		})
 	}
 
+	const clearGameBoard = () => {
+		document.querySelectorAll('.square').forEach( square => {
+			square.firstChild.innerText = ''
+		})
+	}
+
+	
 	const highlightCurrentPlayer = () => {
 		const currentPlayerLabel = document.querySelector(`.player-${game.currentPlayer.number}`)
 		currentPlayerLabel.classList.add('current')
-
+		
 		return
 	}
 	highlightCurrentPlayer() //runs once at load
-
+	
 	const removeHighlight = () => {
 		const currentPlayerLabel = document.querySelector(`.player-${game.currentPlayer.number}`)
 		currentPlayerLabel.classList.remove('current')
-
+		
 		return
+	}
+
+	const resetPlayersElement = () => {
+		playersElement.style.flexDirection = 'row'
+		while (playersElement.hasChildNodes()) {
+			playersElement.removeChild(playersElement.childNodes[0])
+		}
+		populatePlayersElement()
 	}
 
 	const showWinner = () => {
@@ -205,17 +239,29 @@ const displayController = (() => {
 		resetButton.classList.add('reset')
 		resetButton.textContent = 'Play Again'
 		playersElement.appendChild(resetButton)
+		resetButton.addEventListener('click', game.resetGame)
 
 		return
+	}
+
+	const removeWinner = () => {
+		const playersElement = document.querySelector('.players')
+		while (playersElement.hasChildNodes()) {
+			playersElement.removeChild(playersElement.childNodes[0])
+		}
 	}
 
 	return {
 		board,
 		updateGameBoard,
+		populatePlayersElement,
+		resetPlayersElement,
+		removeWinner,
 		highlightCurrentPlayer,
 		removeHighlight,
 		showWinner,
 		showTie,
+		clearGameBoard,
 	}
 
 })()
